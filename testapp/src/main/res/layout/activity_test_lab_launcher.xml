@@ -76,6 +76,13 @@
             android:text="7. Translucent Dialog (Safety Check)" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDialogPortraitLock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="8. Dialog Window Portrait Lock (WindowManagerGlobal)" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRecreateSelf"
             style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="match_parent"

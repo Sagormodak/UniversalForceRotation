@@ -59,6 +59,21 @@ class TestLabLauncherActivity : AppCompatActivity() {
         binding.btnTranslucentDialog.setOnClickListener {
             startActivity(Intent(this, TranslucentDialogActivity::class.java))
         }
+        binding.btnDialogPortraitLock.setOnClickListener {
+            val dialog = android.app.Dialog(this).apply {
+                setTitle("Portrait Locked Dialog")
+                setContentView(android.widget.TextView(this@TestLabLauncherActivity).apply {
+                    text = "Dialog attempted Window.LayoutParams.screenOrientation = PORTRAIT. Rotate phone to verify override."
+                    setPadding(48, 36, 48, 36)
+                })
+                window?.let { w ->
+                    val lp = w.attributes
+                    lp.screenOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                    w.attributes = lp
+                }
+            }
+            dialog.show()
+        }
         binding.btnRecreateSelf.setOnClickListener {
             recreate()
         }

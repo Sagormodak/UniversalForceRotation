@@ -81,4 +81,48 @@ class OrientationStateTrackerTest {
         // Second call returns null so restore does not keep re-firing
         assertNull(tracker.consumeRestoreOrientationIfNeeded(activity))
     }
+
+    @Test
+    fun `server orientation drift triggers lifecycle and runtime re-sync after cooldown`() {
+        val tracker = OrientationStateTracker(lifecycleRetryCooldownMs = 250L)
+        val activity = Any()
+        val target = ActivityInfo.SCREEN_ORIENTATION_FULL_USER
+
+        tracker.markApplied(activity, target, policyRevision = 1L, nowMs = 100L)
+
+        // When server matches target -> lifecycle skips redundantly
+        assertFalse(
+            tracker.shouldApplyForLifecycle(activity, target, policyRevision = 1L, nowMs = 500L, serverOrientation = target)
+        )
+
+        // When server drifted back to PORTRAIT -> within cooldown suppressed, after cooldown re-applied
+        assertFalse(
+            tracker.shouldApplyForLifecycle(
+                activity,
+                target,
+                policyRevision = 1L,
+                nowMs = 200L,
+                serverOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT,
+            )
+        )
+        assertTrue(
+            tracker.shouldApplyForLifecycle(
+                activity,
+                target,
+                policyRevision = 1L,
+                nowMs = 400L,
+                serverOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT,
+            )
+        )
+        assertTrue(
+            tracker.shouldApplyForRuntimeRequest(
+                activity,
+                ActivityInfo.SCREEN_ORIENTATION_PORTRAIT,
+                target,
+                policyRevision = 1L,
+                nowMs = 400L,
+                serverOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT,
+            )
+        )
+    }
 }

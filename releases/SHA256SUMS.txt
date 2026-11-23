@@ -1,3 +1,3 @@
-ef826ba5ead217429a6dbad84254a0735fa8d99bd005a1ff89772df28097c825  UniversalForceRotation-v1.0.0-debug.apk
-7b9002c59da0d9f96f69151c23ce4e1e11d279a1d23854efb6b574b328030bdc  UniversalForceRotation-v1.0.0-release.apk
-07bf2f36cad5b1a88e552558d51985d840ea8e3e7f018901c756f89b01cfb735  UniversalForceRotation-TestLab-v1.0.0-debug.apk
+e01da9c146f74f05b2666daec44bc2598b65f05220f8b2168c4b58b80c1b224b  UniversalForceRotation-v1.1.0-debug.apk
+8dacd40a2a2f7138a10230f27614a9a3a1b35e912abc9d240d6bb37682af2c57  UniversalForceRotation-v1.1.0-release.apk
+d03f5e26ad145aa214fee6db53a14450acc2018a7f3e386da00a16e28447c4e8  UniversalForceRotation-TestLab-v1.1.0-debug.apk

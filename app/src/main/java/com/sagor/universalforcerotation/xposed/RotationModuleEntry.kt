@@ -14,6 +14,7 @@ import io.github.libxposed.api.XposedModuleInterface.HotReloadedParam
 import io.github.libxposed.api.XposedModuleInterface.HotReloadingParam
 import io.github.libxposed.api.XposedModuleInterface.ModuleLoadedParam
 import io.github.libxposed.api.XposedModuleInterface.PackageReadyParam
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * Modern libxposed API 102 entry point declared in META-INF/xposed/java_init.list.
@@ -32,6 +33,8 @@ class RotationModuleEntry : XposedModule() {
             if (tr != null) log(priority, tag, msg, tr) else log(priority, tag, msg)
         }
     }
+
+    private val hooksInitialized = AtomicBoolean(false)
 
     @Volatile
     private var targetPackageName: String = ""
@@ -60,12 +63,17 @@ class RotationModuleEntry : XposedModule() {
     }
 
     override fun onPackageReady(param: PackageReadyParam) {
-        if (!param.isFirstPackage) return
-
         val pkg = param.packageName
         if (SafetyGuard.isProtectedPackage(pkg)) {
             logger.info("Skipping protected package: $pkg")
             detachIfSupported()
+            return
+        }
+
+        // Vector dispatches onPackageReady again for split APKs / dynamic feature modules (e.g., TikTok sub-features).
+        // Initialize process-wide framework hooks once so split loads never duplicate listeners or reset state.
+        if (!hooksInitialized.compareAndSet(false, true)) {
+            logger.debug("Ignoring subsequent onPackageReady for $pkg (isFirst=${param.isFirstPackage}); hooks already active")
             return
         }
 
@@ -103,6 +111,7 @@ class RotationModuleEntry : XposedModule() {
         targetProcessName = state?.getString(STATE_PROCESS_NAME) ?: param.processName
         targetPackageName = state?.getString(STATE_PACKAGE_NAME) ?: param.processName
         targetIsSystemApp = state?.getBoolean(STATE_IS_SYSTEM_APP) ?: false
+        hooksInitialized.set(true)
 
         logger.info(
             "Hot reloaded $targetPackageName ($targetProcessName) with ${param.oldHookHandles.size} previous hook handles"

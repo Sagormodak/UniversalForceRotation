@@ -151,4 +151,46 @@ class HookCoordinatorSimulationTest {
         assertEquals(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR, d2.mode.screenOrientation)
         assertTrue(!OrientationMode.isFixedOrientation(d2.mode.screenOrientation))
     }
+
+    @Test
+    fun `multi-section app flow overrides feed, messages sub-activity drift, and dialog window locks`() {
+        val config = RotationConfig(globalMode = OrientationMode.FOLLOW_AUTO_ROTATE, revision = 1L)
+        val tracker = OrientationStateTracker(lifecycleRetryCooldownMs = 200L)
+
+        // Main feed activity
+        val feedActivity = FakeActivity("MainFeedActivity", ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+        simulateLifecycle(feedActivity, config, tracker, 100L)
+        assertEquals(ActivityInfo.SCREEN_ORIENTATION_FULL_USER, feedActivity.actualOrientation)
+
+        // Messages sub-activity opens with manifest portrait lock & sub-feature drift
+        val messagesActivity = FakeActivity("MessagesChatActivity", ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+        simulateLifecycle(messagesActivity, config, tracker, 200L)
+        assertEquals(ActivityInfo.SCREEN_ORIENTATION_FULL_USER, messagesActivity.actualOrientation)
+
+        // Simulate server-side ActivityRecord reset to PORTRAIT on tab/fragment transition after cooldown
+        messagesActivity.actualOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        val decision = OrientationPolicyEngine.evaluate("com.zhiliaoapp.musically", false, config) as PolicyDecision.Apply
+        assertTrue(
+            tracker.shouldApplyForLifecycle(
+                messagesActivity,
+                decision.mode.screenOrientation,
+                config.revision,
+                nowMs = 500L,
+                serverOrientation = messagesActivity.actualOrientation,
+            )
+        )
+        messagesActivity.actualOrientation = decision.mode.screenOrientation
+        tracker.markApplied(messagesActivity, decision.mode.screenOrientation, config.revision, 500L)
+        assertEquals(ActivityInfo.SCREEN_ORIENTATION_FULL_USER, messagesActivity.actualOrientation)
+
+        // Dialog window with explicit portrait LayoutParams is rewritten while unspecified (-1) stays null
+        assertEquals(
+            ActivityInfo.SCREEN_ORIENTATION_FULL_USER,
+            OrientationPolicyEngine.resolveWindowLayoutOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT, decision),
+        )
+        assertEquals(
+            null,
+            OrientationPolicyEngine.resolveWindowLayoutOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED, decision),
+        )
+    }
 }

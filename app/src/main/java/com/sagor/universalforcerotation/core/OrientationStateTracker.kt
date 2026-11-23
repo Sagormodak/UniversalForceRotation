@@ -5,9 +5,16 @@ import java.util.WeakHashMap
 
 /**
  * Tracks per-Activity orientation state to eliminate redundant IPC calls, prevent infinite
- * recreation/loop throttling on Android 16/17, and restore original behavior when disabled live.
+ * recreation/loop throttling on Android 16/17, detect server-side orientation drift, and
+ * restore original behavior when disabled live.
  */
-class OrientationStateTracker {
+class OrientationStateTracker(
+    private val lifecycleRetryCooldownMs: Long = DEFAULT_LIFECYCLE_RETRY_COOLDOWN_MS,
+) {
+
+    companion object {
+        const val DEFAULT_LIFECYCLE_RETRY_COOLDOWN_MS = 250L
+    }
 
     data class ActivityOrientationRecord(
         var lastAppRequested: Int? = null,
@@ -28,9 +35,22 @@ class OrientationStateTracker {
         targetOrientation: Int,
         policyRevision: Long,
         nowMs: Long,
+        serverOrientation: Int? = null,
     ): Boolean {
         val record = records.getOrPut(activity) { ActivityOrientationRecord() }
         record.lastAppRequested = appRequested
+
+        // If the true server-side ActivityRecord disagrees with our policy target, re-apply after cooldown.
+        if (serverOrientation != null && serverOrientation != targetOrientation) {
+            if (!record.overriddenByModule ||
+                record.lastAppliedPolicyRevision != policyRevision ||
+                (nowMs - record.lastAppliedElapsedMs) >= lifecycleRetryCooldownMs
+            ) {
+                return true
+            }
+            record.suppressedDuplicateCount++
+            return false
+        }
 
         if (record.overriddenByModule &&
             record.lastAppliedOrientation == targetOrientation &&
@@ -47,11 +67,20 @@ class OrientationStateTracker {
         activity: Any,
         targetOrientation: Int,
         policyRevision: Long,
+        nowMs: Long = 0L,
+        serverOrientation: Int? = null,
     ): Boolean {
         val record = records[activity] ?: return true
-        return !record.overriddenByModule ||
+        if (!record.overriddenByModule ||
             record.lastAppliedOrientation != targetOrientation ||
             record.lastAppliedPolicyRevision != policyRevision
+        ) {
+            return true
+        }
+        if (serverOrientation != null && serverOrientation != targetOrientation) {
+            return (nowMs - record.lastAppliedElapsedMs) >= lifecycleRetryCooldownMs
+        }
+        return false
     }
 
     @Synchronized
