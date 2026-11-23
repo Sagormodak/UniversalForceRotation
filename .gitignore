@@ -1,0 +1,27 @@
+# Gradle & Kotlin
+.gradle/
+.kotlin/
+**/build/
+build/
+
+# Local & Signing Config
+local.properties
+keystore.properties
+*.jks
+*.keystore
+
+# IDE
+.idea/
+*.iml
+.cxx/
+captures/
+*.hprof
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Ensure Gradle Wrapper jar and prebuilt releases are tracked
+!gradle/wrapper/gradle-wrapper.jar
+!releases/*.apk
+!releases/SHA256SUMS.txt

@@ -1,0 +1,27 @@
+[versions]
+agp = "9.3.1"
+libxposed-api = "102.0.0"
+libxposed-service = "102.0.0"
+core-ktx = "1.19.0"
+appcompat = "1.8.0"
+material = "1.14.0"
+recyclerview = "1.4.0"
+constraintlayout = "2.2.2"
+lifecycle = "2.11.0"
+coroutines = "1.11.0"
+junit = "4.13.2"
+
+[plugins]
+agp-app = { id = "com.android.application", version.ref = "agp" }
+
+[libraries]
+libxposed-api = { group = "io.github.libxposed", name = "api", version.ref = "libxposed-api" }
+libxposed-service = { group = "io.github.libxposed", name = "service", version.ref = "libxposed-service" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+google-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }

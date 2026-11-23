@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ufr_surface_ok">#163829</color>
+    <color name="ufr_surface_warn">#3D2E14</color>
+</resources>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Universal Force Rotation</string>
+    <string name="xposed_module_description">Modern libxposed API 102 rotation override engine for Android 17 and Vector 2.2. Lets locked portrait/landscape apps follow system Auto Rotate or custom per-app orientations.</string>
+
+    <string name="nav_apps">Apps</string>
+    <string name="nav_exclusions">Exclusions</string>
+    <string name="nav_diagnostics">Diagnostics</string>
+
+    <string name="status_connected_title">Vector Service Active</string>
+    <string name="status_disconnected_title">Vector Service Not Connected</string>
+    <string name="status_disconnected_subtitle">Open Vector Manager, enable Universal Force Rotation, select target apps in Scope, and restart target apps.</string>
+
+    <string name="master_enable_title">Master Enable</string>
+    <string name="master_enable_subtitle">Enable or pause all orientation interception globally</string>
+    <string name="global_force_title">Global Force Rotation</string>
+    <string name="global_force_subtitle">Apply default orientation mode to all enabled third-party apps</string>
+    <string name="default_mode_label">Default Orientation Mode</string>
+    <string name="search_apps_hint">Search apps by name or package</string>
+
+    <string name="chip_third_party">Third-Party</string>
+    <string name="chip_excluded">Excluded</string>
+    <string name="chip_custom_mode">Custom Mode</string>
+    <string name="chip_in_scope">In Vector Scope</string>
+    <string name="chip_system">System</string>
+    <string name="chip_all">All</string>
+
+    <string name="exclude_system_title">Exclude System Apps by Default</string>
+    <string name="exclude_system_subtitle">Prevents interfering with ROM components unless explicitly enabled per app</string>
+    <string name="verbose_log_title">Verbose Hook Logging</string>
+    <string name="verbose_log_subtitle">Log every intercepted call and duplicate suppression in Vector logs</string>
+    <string name="reset_all_overrides">Reset All Per-App Overrides</string>
+
+    <string name="copy_diagnostics">Copy Diagnostics Report</string>
+    <string name="refresh_targets">Refresh</string>
+    <string name="hot_reload_all">Hot Reload All (API 102)</string>
+</resources>

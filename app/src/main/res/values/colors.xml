@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ufr_primary">#1B6B52</color>
+    <color name="ufr_on_primary">#FFFFFF</color>
+    <color name="ufr_primary_container">#A6F2D1</color>
+    <color name="ufr_on_primary_container">#002116</color>
+    <color name="ufr_secondary">#4D6357</color>
+    <color name="ufr_secondary_container">#CFE9D9</color>
+    <color name="ufr_on_secondary_container">#0A1F16</color>
+    <color name="ufr_error">#BA1A1A</color>
+    <color name="ufr_error_container">#FFDAD6</color>
+    <color name="ufr_on_error_container">#410002</color>
+    <color name="ufr_surface_ok">#E2F5EA</color>
+    <color name="ufr_surface_warn">#FFF3E0</color>
+    <color name="ufr_launcher_bg">#1B6B52</color>
+</resources>

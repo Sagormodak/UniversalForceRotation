@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rotation Test Lab (Unspecified Activity)"
+            android:textAppearance="?attr/textAppearanceHeadlineSmall"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvTelemetry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="#18000000"
+            android:fontFamily="monospace"
+            android:padding="12dp"
+            android:textAppearance="?attr/textAppearanceBodySmall" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnManifestPortrait"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="1. Manifest Portrait (Never calls setRequestedOrientation)" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnManifestLandscape"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="2. Manifest Landscape" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnRuntimePortrait"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="3. Runtime Portrait (onCreate + onResume)" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnRuntimeLandscape"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="4. Runtime Landscape (onCreate + onResume)" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAggressivePortrait"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="5. Aggressive Portrait Loop (Every 500ms)" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnWindowLayoutLock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="6. Window.LayoutParams Portrait Lock" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnTranslucentDialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="7. Translucent Dialog (Safety Check)" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnRecreateSelf"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Recreate Current Activity" />
+    </LinearLayout>
+</ScrollView>
